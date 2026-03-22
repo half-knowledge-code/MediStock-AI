@@ -379,7 +379,7 @@ export function ExpiryAlerts() {
   );
 }
 
-// ── ADD DRUG (FIXED) ──────────────────────────────────────
+// ── ADD DRUG ──────────────────────────────────────
 export function AddDrug({ setPage }) {
   const { addDrug } = useDrugs();
   const [form, setForm] = useState({ name:"", category:"", batch:"", quantity:"", threshold:"30", unitPrice:"", expiry:"", supplier:"", notes:"" });
@@ -466,31 +466,153 @@ export function ReorderQueue() {
 }
 
 // ── SUPPLIERS ──────────────────────────────────────
+
 export function Suppliers() {
+
+  const [showForm, setShowForm] = useState(false);
+
+  const [suppliers, setSuppliers] = useState([...SUPPLIERS]);
+
+  const [form, setForm] = useState({
+    name: "",
+    area: "",
+    contact: "",
+    email: "",
+    rating: ""
+  });
+
+  const handleAdd = () => {
+    const newSupplier = {
+      id: Date.now(),
+      ...form
+    };
+
+    setSuppliers(prev => [...prev, newSupplier]);
+    setShowForm(false);
+
+    setForm({
+      name: "",
+      area: "",
+      contact: "",
+      email: "",
+      rating: ""
+    });
+  };
+
   return (
     <div className="page active">
+
+      {/* TOP BAR */}
       <div className="topbar">
-        <div><div className="page-title">🏪 <span>Suppliers</span></div><div className="page-sub">Registered pharmacy suppliers</div></div>
-        <button className="btn btn-primary btn-sm">➕ Add Supplier</button>
+        <div>
+          <div className="page-title">🏪 <span>Suppliers</span></div>
+          <div className="page-sub">Registered pharmacy suppliers</div>
+        </div>
+
+        <button
+          className="btn btn-primary btn-sm"
+          onClick={() => setShowForm(true)}
+        >
+          ➕ Add Supplier
+        </button>
       </div>
+
+      {/* 🔥 FORM */}
+      {showForm && (
+        <div className="panel" style={{ marginBottom: 20 }}>
+          <div className="panel-body" style={{ display: "grid", gap: 10 }}>
+
+            <input placeholder="Name"
+              value={form.name}
+              onChange={e => setForm({ ...form, name: e.target.value })}
+            />
+
+            <input placeholder="Area"
+              value={form.area}
+              onChange={e => setForm({ ...form, area: e.target.value })}
+            />
+
+            <input placeholder="Contact"
+              value={form.contact}
+              onChange={e => setForm({ ...form, contact: e.target.value })}
+            />
+
+            <input placeholder="Email"
+              value={form.email}
+              onChange={e => setForm({ ...form, email: e.target.value })}
+            />
+
+            <input placeholder="Rating (e.g. 4.5)"
+              value={form.rating}
+              onChange={e => setForm({ ...form, rating: e.target.value })}
+            />
+
+            <div style={{ display: "flex", gap: 10 }}>
+              <button className="btn btn-primary btn-sm" onClick={handleAdd}>
+                Save
+              </button>
+
+              <button className="btn btn-outline btn-sm" onClick={() => setShowForm(false)}>
+                Cancel
+              </button>
+            </div>
+
+          </div>
+        </div>
+      )}
+
+      {/* SUPPLIERS LIST */}
       <div style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:16 }}>
-        {SUPPLIERS.map(s => (
+        {suppliers.map(s => (
           <div className="panel" key={s.id}>
             <div className="panel-body">
+
               <div style={{ display:"flex", alignItems:"center", gap:10, marginBottom:12 }}>
-                <div style={{ width:40, height:40, borderRadius:10, background:"rgba(0,200,255,0.1)", display:"flex", alignItems:"center", justifyContent:"center", fontSize:20 }}>🏪</div>
-                <div><div style={{ fontWeight:700, fontSize:14 }}>{s.name}</div><div style={{ fontSize:11, color:"var(--muted)" }}>{s.area}</div></div>
+                <div style={{
+                  width:40,
+                  height:40,
+                  borderRadius:10,
+                  background:"rgba(0,200,255,0.1)",
+                  display:"flex",
+                  alignItems:"center",
+                  justifyContent:"center",
+                  fontSize:20
+                }}>
+                  🏪
+                </div>
+
+                <div>
+                  <div style={{ fontWeight:700, fontSize:14 }}>{s.name}</div>
+                  <div style={{ fontSize:11, color:"var(--muted)" }}>{s.area}</div>
+                </div>
               </div>
-              <div style={{ fontSize:13, color:"var(--muted)", marginBottom:4 }}>📞 {s.contact}</div>
-              <div style={{ fontSize:13, color:"var(--muted)", marginBottom:12 }}>✉ {s.email}</div>
+
+              <div style={{ fontSize:13, color:"var(--muted)", marginBottom:4 }}>
+                📞 {s.contact}
+              </div>
+
+              <div style={{ fontSize:13, color:"var(--muted)", marginBottom:12 }}>
+                ✉ {s.email}
+              </div>
+
               <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between" }}>
-                <span style={{ fontSize:12, color:"var(--green)" }}>★ {s.rating}/5.0</span>
-                <button className="btn btn-outline btn-sm" onClick={() => window.open(`mailto:${s.email}`)}>Contact</button>
+                <span style={{ fontSize:12, color:"var(--green)" }}>
+                  ★ {s.rating}/5.0
+                </span>
+
+                <button
+                  className="btn btn-outline btn-sm"
+                  onClick={() => window.open(`mailto:${s.email}`)}
+                >
+                  Contact
+                </button>
               </div>
+
             </div>
           </div>
         ))}
       </div>
+
     </div>
   );
 }
@@ -560,7 +682,7 @@ export function AIPredictions() {
                   background: isSelected ? "rgba(0,102,255,0.06)" : "transparent",
                   transition:"all 0.15s", borderBottom:"1px solid var(--border)"
                 }}>
-                  <div style={{ fontSize:11, color:"var(--muted)", width:20, textAlign:"center", fontFamily:"monospace" }}>{String(i+1).padStart(2,"0")}</div>
+                  <div style={{ fontSize:11, color:"var(--muted)", width:20, textAlign:"center", fontFamily:"monospace" }}>{String(i+1).padStart(2,"00")}</div>
                   <div style={{ flex:1, minWidth:0 }}>
                     <div style={{ display:"flex", alignItems:"center", gap:8, marginBottom:5 }}>
                       <span style={{ fontWeight:700, fontSize:14 }}>{p.name}</span>
@@ -670,7 +792,7 @@ export function AIPredictions() {
   );
 }
 
-// ── ANALYTICS (CHART.JS — CLEAN BLUE THEME) ──────────────────────────────────────
+// ── ANALYTICS (FIXED — purple line chart, topDrugs defined) ──────────────────────────────────────
 export function Analytics() {
   const { drugs } = useDrugs();
   const val = inventoryValue(drugs);
@@ -681,7 +803,7 @@ export function Analytics() {
   const crit = statuses.filter(s => s === "crit").length;
   const low  = statuses.filter(s => s === "low").length;
 
-  // ── Bar Chart: Single blue family, varying opacity ──
+  // ── Bar Chart ──
   const catLabels = CATEGORIES;
   const catQtys   = CATEGORIES.map(c => drugs.filter(d => d.category === c).reduce((s, d) => s + d.quantity, 0));
 
@@ -714,8 +836,8 @@ export function Analytics() {
       }
     },
     scales: {
-      x: { ticks: { color: "#6b7fa0", font: { size: 11 } }, grid: { color: "rgba(255,255,255,0.04)" } },
-      y: { ticks: { color: "#6b7fa0", font: { size: 11 } }, grid: { color: "rgba(255,255,255,0.06)" }, beginAtZero: true }
+      x: { ticks: { color:"#6b7fa0", font:{ size:11 } }, grid: { color:"rgba(255,255,255,0.04)" } },
+      y: { ticks: { color:"#6b7fa0", font:{ size:11 } }, grid: { color:"rgba(255,255,255,0.06)" }, beginAtZero: true }
     }
   };
 
@@ -741,108 +863,93 @@ export function Analytics() {
     }
   };
 
-  // ── Line Chart: Avg vs Predicted ──
-  const lineData = {
-  labels: topDrugs.map(p => p.name),
-  datasets: [
-    {
-      label: "Avg Monthly",
-      data: topDrugs.map(p => p.avgMonthly),
-      borderColor: "rgba(180,100,255,0.9)",
-      backgroundColor: (ctx) => {
-        const chart = ctx.chart;
-        const { ctx: c, chartArea } = chart;
-        if (!chartArea) return "transparent";
-        const gradient = c.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
-        gradient.addColorStop(0, "rgba(160,80,255,0.35)");
-        gradient.addColorStop(1, "rgba(100,40,200,0.02)");
-        return gradient;
-      },
-      pointBackgroundColor: "rgba(200,130,255,1)",
-      pointBorderColor: "#fff",
-      pointBorderWidth: 2,
-      pointRadius: 5,
-      pointHoverRadius: 10,
-      pointHoverBackgroundColor: "#fff",
-      pointHoverBorderColor: "rgba(200,130,255,1)",
-      pointHoverBorderWidth: 3,
-      tension: 0.45,
-      fill: true,
-      borderWidth: 2.5,
-    },
-    {
-      label: "AI Predicted",
-      data: topDrugs.map(p => p.predicted),
-      borderColor: "rgba(130,80,255,0.9)",
-      backgroundColor: (ctx) => {
-        const chart = ctx.chart;
-        const { ctx: c, chartArea } = chart;
-        if (!chartArea) return "transparent";
-        const gradient = c.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
-        gradient.addColorStop(0, "rgba(100,50,220,0.3)");
-        gradient.addColorStop(1, "rgba(60,20,160,0.02)");
-        return gradient;
-      },
-      pointBackgroundColor: "rgba(150,100,255,1)",
-      pointBorderColor: "#fff",
-      pointBorderWidth: 2,
-      pointRadius: 5,
-      pointHoverRadius: 10,
-      pointHoverBackgroundColor: "#fff",
-      pointHoverBorderColor: "rgba(150,100,255,1)",
-      pointHoverBorderWidth: 3,
-      tension: 0.45,
-      fill: true,
-      borderDash: [6, 3],
-      borderWidth: 2.5,
-    }
-  ]
-};
+  // ── Line Chart: Purple Glassmorphism ── ✅ topDrugs defined here
+  const topDrugs = ML_PREDICTIONS.slice(0, 8);
 
-const lineOptions = {
-  responsive: true,
-  animation: { duration: 1400, easing: "easeInOutQuart" },
-  interaction: {
-    mode: "index",
-    intersect: false,  // ← cursor pe dono lines ka data dikhega
-  },
-  plugins: {
-    legend: {
-      labels: {
-        color: "#b080ff",
-        font: { size: 12 },
-        usePointStyle: true,
-        pointStyleWidth: 10
+  const lineData = {
+    labels: topDrugs.map(p => p.name),
+    datasets: [
+      {
+        label: "Avg Monthly",
+        data: topDrugs.map(p => p.avgMonthly),
+        borderColor: "rgba(180,100,255,0.9)",
+        backgroundColor: (ctx) => {
+          const chart = ctx.chart;
+          const { ctx: c, chartArea } = chart;
+          if (!chartArea) return "transparent";
+          const gradient = c.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
+          gradient.addColorStop(0, "rgba(160,80,255,0.35)");
+          gradient.addColorStop(1, "rgba(100,40,200,0.02)");
+          return gradient;
+        },
+        pointBackgroundColor: "rgba(200,130,255,1)",
+        pointBorderColor: "#fff",
+        pointBorderWidth: 2,
+        pointRadius: 5,
+        pointHoverRadius: 10,
+        pointHoverBackgroundColor: "#fff",
+        pointHoverBorderColor: "rgba(200,130,255,1)",
+        pointHoverBorderWidth: 3,
+        tension: 0.45,
+        fill: true,
+        borderWidth: 2.5,
+      },
+      {
+        label: "AI Predicted",
+        data: topDrugs.map(p => p.predicted),
+        borderColor: "rgba(130,80,255,0.9)",
+        backgroundColor: (ctx) => {
+          const chart = ctx.chart;
+          const { ctx: c, chartArea } = chart;
+          if (!chartArea) return "transparent";
+          const gradient = c.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
+          gradient.addColorStop(0, "rgba(100,50,220,0.3)");
+          gradient.addColorStop(1, "rgba(60,20,160,0.02)");
+          return gradient;
+        },
+        pointBackgroundColor: "rgba(150,100,255,1)",
+        pointBorderColor: "#fff",
+        pointBorderWidth: 2,
+        pointRadius: 5,
+        pointHoverRadius: 10,
+        pointHoverBackgroundColor: "#fff",
+        pointHoverBorderColor: "rgba(150,100,255,1)",
+        pointHoverBorderWidth: 3,
+        tension: 0.45,
+        fill: true,
+        borderDash: [6, 3],
+        borderWidth: 2.5,
+      }
+    ]
+  };
+
+  const lineOptions = {
+    responsive: true,
+    animation: { duration: 1400, easing: "easeInOutQuart" },
+    interaction: { mode: "index", intersect: false },
+    plugins: {
+      legend: {
+        labels: { color:"#b080ff", font:{ size:12 }, usePointStyle:true, pointStyleWidth:10 }
+      },
+      tooltip: {
+        backgroundColor: "rgba(20,10,50,0.92)",
+        titleColor: "#c090ff",
+        bodyColor: "#e8d8ff",
+        borderColor: "rgba(160,80,255,0.4)",
+        borderWidth: 1,
+        padding: 14,
+        cornerRadius: 10,
+        mode: "index",
+        intersect: false,
+        callbacks: { label: ctx => `  ${ctx.dataset.label}: ${ctx.parsed.y} units` }
       }
     },
-    tooltip: {
-      backgroundColor: "rgba(20,10,50,0.92)",
-      titleColor: "#c090ff",
-      bodyColor: "#e8d8ff",
-      borderColor: "rgba(160,80,255,0.4)",
-      borderWidth: 1,
-      padding: 14,
-      cornerRadius: 10,
-      mode: "index",
-      intersect: false,
-      callbacks: {
-        label: ctx => `  ${ctx.dataset.label}: ${ctx.parsed.y} units`
-      }
+    scales: {
+      x: { ticks: { color:"#7050a0", font:{ size:10 }, maxRotation:30 }, grid: { color:"rgba(150,80,255,0.06)" } },
+      y: { ticks: { color:"#7050a0", font:{ size:11 } }, grid: { color:"rgba(150,80,255,0.08)" }, beginAtZero: true }
     }
-  },
-  scales: {
-    x: {
-      ticks: { color: "#7050a0", font: { size: 10 }, maxRotation: 30 },
-      grid: { color: "rgba(150,80,255,0.06)" }
-    },
-    y: {
-      ticks: { color: "#7050a0", font: { size: 11 } },
-      grid: { color: "rgba(150,80,255,0.08)" },
-      beginAtZero: true
-    }
-  }
-};
-  
+  };
+
   return (
     <div className="page active">
       <div className="topbar">
@@ -897,11 +1004,11 @@ const lineOptions = {
         </div>
       </div>
 
-      {/* Row 2: Line Chart */}
-      <div className="panel">
+      {/* Row 2: Purple Line Chart */}
+      <div className="panel" style={{ background:"rgba(20,10,45,0.85)", border:"1px solid rgba(120,60,220,0.3)" }}>
         <div className="panel-head">
           <span className="panel-title">📈 AI Predicted vs Avg Monthly Demand</span>
-          <span style={{ fontSize:11, color:"var(--muted)" }}>Top 8 drugs · dashed = AI prediction</span>
+          <span style={{ fontSize:11, color:"#7050a0" }}>Top 8 drugs · cursor pe hover karo</span>
         </div>
         <div className="panel-body" style={{ padding:"12px 16px" }}>
           <Line data={lineData} options={lineOptions} />

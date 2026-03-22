@@ -1,10 +1,11 @@
 import ReorderPage from "./pages/ReorderPage";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import { DrugProvider, useDrugs } from "./context/DrugContext";
 import LoginPage from "./pages/LoginPage";
 import Sidebar from "./components/Sidebar";
 import UserManagement from "./pages/UserManagement";
+import "./App.css"; 
 
 import {
   Dashboard,

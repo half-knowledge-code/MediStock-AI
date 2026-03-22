@@ -41,8 +41,18 @@ body::after {
 
 /* ── SIDEBAR ── */
 .sidebar {
-  background: #ffffff;
-  border-right: 1px solid var(--border);
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;      /* 🔥 full height fix */
+  width: 250px;
+  background: white;  /* ya tera color */
+  overflow-y: auto;   /* scroll inside sidebar */
+  border-right: 1px solid #e5e7eb;
+}
+
+.main {
+  margin-left: 250px; /* sidebar ke liye space */
 }
 
 .logo {

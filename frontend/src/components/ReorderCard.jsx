@@ -1,11 +1,11 @@
-export default function ReorderCard({ drug }) {
+export default function ReorderCard({ drug, setData, index }) {
 
   const handleOrder = () => {
-  alert(`Order placed for ${drug.name}`);
+    alert(`Order placed for ${drug.name}`);
 
-  // 🔥 remove from UI instantly
-  setData(prev => prev.filter(d => d.name !== drug.name));
-};
+    // 🔥 remove from UI
+    setData(prev => prev.filter((_, i) => i !== index));
+  };
 
   return (
     <div style={{
@@ -24,15 +24,6 @@ export default function ReorderCard({ drug }) {
 
       <p style={{ color: drug.suggest_reorder > 0 ? "red" : "green" }}>
         Reorder: {drug.suggest_reorder}
-      </p>
-
-      <p style={{
-        color:
-          drug.priority === "HIGH" ? "red" :
-          drug.priority === "MEDIUM" ? "orange" : "green",
-        fontWeight: "bold"
-      }}>
-        Priority: {drug.priority || "LOW"}
       </p>
 
       <button

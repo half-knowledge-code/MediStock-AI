@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import ReorderCard from "../components/ReorderCard";
 
 export default function ReorderPage() {
+
   const [data, setData] = useState([]);
 
   useEffect(() => {
@@ -16,9 +17,16 @@ export default function ReorderPage() {
       <h2>Order Medicines</h2>
 
       <div style={{ display: "flex", gap: "20px", flexWrap: "wrap" }}>
+        
         {data.map((drug, index) => (
-          <ReorderCard key={index} drug={drug} />
+          <ReorderCard
+            key={drug.name}
+            drug={drug}
+            setData={setData}
+            index={index}
+          />
         ))}
+
       </div>
     </div>
   );

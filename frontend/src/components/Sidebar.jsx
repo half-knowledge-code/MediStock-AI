@@ -1,5 +1,6 @@
 import { useAuth } from "../context/AuthContext";
 import { useDrugs } from "../context/DrugContext";
+import logo from "../assets/logo.png";
 
 export default function Sidebar({ page, setPage }) {
   const { user, logout } = useAuth();
@@ -10,7 +11,6 @@ export default function Sidebar({ page, setPage }) {
   const expiring = drugs.filter(d => Math.ceil((new Date(d.expiry) - TODAY) / 86400000) <= 60).length;
   const reorders = drugs.filter(d => d.quantity <= (d.threshold || 30)).length;
 
-  // Role-based nav
   const allNav = [
     { id:"dashboard",  icon:"⊞",  label:"Dashboard",      roles:["admin","manager","pharmacist"], section:"Overview" },
     { id:"inventory",  icon:"📦", label:"Inventory",       roles:["admin","manager","pharmacist"], badge: drugs.length, green:true },
@@ -23,19 +23,31 @@ export default function Sidebar({ page, setPage }) {
     { id:"analytics",  icon:"📊", label:"Analytics",       roles:["admin","manager"] },
     { id:"reports",    icon:"📋", label:"Reports",         roles:["admin","manager"] },
     { id:"settings",   icon:"⚙️", label:"Settings",        roles:["admin"],                        section:"System" },
-{ id:"reorderPage", icon:"📦", label:"Order Drugs", roles:["admin","manager","pharmacist"] },
+    { id:"reorderPage",icon:"📦", label:"Order Drugs",     roles:["admin","manager","pharmacist"] },
   ];
 
   const nav = allNav.filter(n => n.roles.includes(role));
 
   return (
     <aside className="sidebar">
+
+      {/* ── LOGO ── */}
       <div className="logo">
-        <div className="logo-icon">💊</div>
+        <img
+          src={logo}
+          alt="MedStock AI"
+          style={{
+            width: 38,
+            height: 38,
+            borderRadius: 10,
+            objectFit: "cover",
+            flexShrink: 0,
+          }}
+        />
         <div className="logo-text">
           Med<span className="hi">Stock</span>
           <br/>
-          <span style={{fontSize:10,color:"var(--muted)",fontWeight:400}}>AI Pharmacy OS</span>
+          <span style={{ fontSize:10, color:"var(--muted)", fontWeight:400 }}>AI Pharmacy OS</span>
         </div>
       </div>
 
@@ -43,10 +55,10 @@ export default function Sidebar({ page, setPage }) {
         {nav.map(item => (
           <div key={item.id}>
             {item.section && <div className="nav-label">{item.section}</div>}
-            <div className={`nav-item${page===item.id?" active":""}`} onClick={()=>setPage(item.id)}>
+            <div className={`nav-item${page === item.id ? " active" : ""}`} onClick={() => setPage(item.id)}>
               <span className="ni">{item.icon}</span>
               {item.label}
-              {item.badge!=null && <span className={`nbadge${item.green?" g":""}`}>{item.badge}</span>}
+              {item.badge != null && <span className={`nbadge${item.green ? " g" : ""}`}>{item.badge}</span>}
             </div>
           </div>
         ))}
@@ -54,16 +66,17 @@ export default function Sidebar({ page, setPage }) {
 
       <div className="sidebar-footer">
         <div className="av-row">
-          <div className="av">{user?.initials||"?"}</div>
+          <div className="av">{user?.initials || "?"}</div>
           <div>
             <div className="av-name">{user?.name}</div>
-            <div className="av-role" style={{color: role==="admin"?"var(--red)":role==="manager"?"var(--green)":"var(--accent)"}}>
+            <div className="av-role" style={{ color: role==="admin" ? "var(--red)" : role==="manager" ? "var(--green)" : "var(--accent)" }}>
               {user?.title} · {role?.toUpperCase()}
             </div>
           </div>
         </div>
         <button className="logout-btn" onClick={logout}>Sign Out</button>
       </div>
+
     </aside>
   );
 }

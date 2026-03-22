@@ -3,15 +3,14 @@ import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyB4yTPdL1owwwSNacCPoM2Jn8agkS7sny4",
-  authDomain: "medstockai.firebaseapp.com",
-  projectId: "medstockai",
-  storageBucket: "medstockai.firebasestorage.app",
-  messagingSenderId: "414690444711",
-  appId: "1:414690444711:web:ebe101a5f58d9bdf35e282"
+  apiKey: "AIzaSyBiMDF0AB8k2gW-2bdyJxQLQezQ-O68D5o",
+  authDomain: "medistock-ai-f43ca.firebaseapp.com",
+  projectId: "medistock-ai-f43ca",
+  storageBucket: "medistock-ai-f43ca.firebasestorage.app",
+  messagingSenderId: "932623824617",
+  appId: "1:932623824617:web:d871beeeed07d03ce92278"
 };
 
 const app = initializeApp(firebaseConfig);
-
 export const auth = getAuth(app);
-export const db = getFirestore(app);   // ⭐ ye line add karo
+export const db   = getFirestore(app);
