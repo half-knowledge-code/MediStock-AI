@@ -168,7 +168,7 @@ Add screenshots of your dashboard here.
 
 ## 👨‍💻 Author
 
-Developed by **Your Name**
+Developed by Innovate X
 
 ---
 
