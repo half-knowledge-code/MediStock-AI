@@ -147,7 +147,7 @@ Sensor Monitoring + Email Alerts
 
 ## 📷 Project Preview
 
-Add screenshots of your dashboard here.
+
 
 
 <img width="1908" height="912" alt="image" src="https://github.com/user-attachments/assets/e78af173-8bb8-4a66-811d-b479e14e879d" />
