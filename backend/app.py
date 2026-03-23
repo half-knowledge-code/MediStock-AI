@@ -15,7 +15,7 @@ CORS(app)
 
 # ───────────── CONFIG ─────────────
 SENDER_EMAIL   = "shubhamwork7007@gmail.com"
-SENDER_PASSWORD = "jcbprnixwmkxguko"
+SENDER_PASSWORD = "--------------"//personal hai password
 ADMIN_EMAIL    = "itsmeanshu248@gmail.com"
 
 # ───────────── DATA ─────────────
